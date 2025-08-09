@@ -29,6 +29,7 @@ TODO:
 - [ ] Tidy Docs
 - [ ] Tidy Code
 - [ ] KeycloakAdminService
+- [ ] KeycloakAdmin Endpoints
 
 NEXT: 
 - [ ] Mobile App
