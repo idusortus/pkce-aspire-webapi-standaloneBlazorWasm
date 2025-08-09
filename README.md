@@ -3,13 +3,15 @@
 - single project webapi with VSA tendancies as server
 - blazor wasm as external client
 
-# Aspire
+# Aspire (webapi + keycloak) solution
 - dotnet new webapi
 - dotnet new aspire-apphost
 - dotnet new aspire-servicedefaults
 
-# Blazor
+# Blazor solution
 - dotnet new blazorwasm -au Individual
+
+[Keycloak Admin REST API](https://www.keycloak.org/docs-api/latest/rest-api/index.html)
 
 TODO:
 - [x] Scalar UI + Imbedded Scalar Auth to IdP
