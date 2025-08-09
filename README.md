@@ -1,5 +1,7 @@
-:warn: Work in Progress
-> Demonstrates basic OIdC / OAuth2 + PKCE flow in a single project webapi with VSA tendancies.
+⚠️ Work in Progress as of 08/08/25
+> Demonstrates basic OIdC / OAuth2 + PKCE flow
+- single project webapi with VSA tendancies as server
+- blazor wasm as external client
 
 # Aspire
 - dotnet new webapi
@@ -20,5 +22,5 @@ TODO:
 
 NEXT: 
 - [ ] Mobile App
-- [ ] Clean & VSA
+- [ ] Clean & VSA Refactoring
 - [ ] Basic Plumbing (EFCore, MediatR, Validation, Logging, Error handling, etc.)  
