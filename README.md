@@ -11,7 +11,8 @@
 # Blazor solution
 - dotnet new blazorwasm -au Individual
 
-[Keycloak Admin REST API](https://www.keycloak.org/docs-api/latest/rest-api/index.html)
+🛂 [Keycloak Admin REST API](https://www.keycloak.org/docs-api/latest/rest-api/index.html)
+💭 [AuthN/AuthZ Notes](https://github.com/idusortus/gists/blob/main/AuthN-AuthZ.md)
 ---
 TODO:
 - [x] Scalar UI + Imbedded Scalar Auth to IdP
