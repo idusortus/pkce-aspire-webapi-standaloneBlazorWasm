@@ -12,7 +12,7 @@
 - dotnet new blazorwasm -au Individual
 
 [Keycloak Admin REST API](https://www.keycloak.org/docs-api/latest/rest-api/index.html)
-
+---
 TODO:
 - [x] Scalar UI + Imbedded Scalar Auth to IdP
 - [x] Postman PKCE Config Documentation 
