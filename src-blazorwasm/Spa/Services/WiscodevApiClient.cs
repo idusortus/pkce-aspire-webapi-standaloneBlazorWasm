@@ -12,8 +12,8 @@ public class WiscodevApiClient(HttpClient httpClient) : IWiscodevApiClient
     public async Task<string> GetGlobalEndWarAsync(CancellationToken ct = default)
         => await GetStringAsync("/politics/global/endwar", ct);
 
-    public async Task<string> ExtendCorporatePotAsync(int bonusDays, CancellationToken ct = default)
-        => await GetStringAsync($"/corporate/pot/extend/{bonusDays}", ct);
+    public async Task<string> ExtendCorporatePtoAsync(int bonusDays, CancellationToken ct = default)
+        => await GetStringAsync($"/corporate/pto/extend/{bonusDays}", ct);
 
     public async Task<string> GetHrEmployedAsync(CancellationToken ct = default)
         => await GetStringAsync("/hr/employed", ct);
