@@ -314,12 +314,8 @@ JSON
 ]
 .NET 9 will recognize these as role claims, enabling [Authorize(Roles="SystemAdmin")] and .RequireRole("SystemAdmin").
 References
-Keycloak Docs: Protocol Mappers (Client Scope)
-Your repo’s Readme: Claims Based Authorization
-TL;DR:
 
 Use the Client Scope → Mappers → Add Mapper (By configuration) path.
 Select User Realm Role as the type.
 Repeat for SPA and API client scopes.
-Let me know if you want a checklist or screenshots for this UI flow!
 </details>
