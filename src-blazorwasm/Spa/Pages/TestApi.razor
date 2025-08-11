@@ -1,0 +1,81 @@
+@page "/testapi"
+@using Spa.Services
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject IHttpClientFactory ClientFactory
+@inject Spa.Services.IWiscodevApiClient Api
+@inject NavigationManager Nav
+@inject ILogger<TestApi> Logger
+
+<PageTitle>Test API</PageTitle>
+
+<h3>Test API</h3>
+<p>This page lets you call secured Wiscodev API endpoints with the current user token.</p>
+
+<AuthorizeView>
+    <Authorized>
+        <div class="mb-3">
+            <button class="btn btn-info" @onclick="CallHealth" disabled="@(loading)">/health</button>
+            <button class="btn btn-primary me-2" @onclick="CallEndWar" disabled="@(loading)">/politics/global/endwar</button>
+            <input class="form-control d-inline-block w-auto me-2" type="number" min="0" @bind="bonusDays" />
+            <button class="btn btn-secondary me-2" @onclick="CallExtendPot" disabled="@(loading)">/corporate/pot/extend/{bonusDays}</button>
+            <button class="btn btn-info" @onclick="CallHrEmployed" disabled="@(loading)">/hr/employed</button>
+        </div>
+        @if (loading)
+        {
+            <p><em>Loading...</em></p>
+        }
+        @if (!string.IsNullOrWhiteSpace(result))
+        {
+            <div class="card mt-3">
+                <div class="card-header">Result</div>
+                <div class="card-body"><pre class="mb-0">@result</pre></div>
+            </div>
+        }
+        @if (!string.IsNullOrWhiteSpace(error))
+        {
+            <div class="alert alert-danger mt-3">@error</div>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <p>You must be logged in to test the API. <a href="authentication/login">Login</a></p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private bool loading;
+    private string? result;
+    private string? error;
+    private int bonusDays = 1;
+
+    private async Task CallHealth()
+        => await InvokeApi(async () => await Api.GetHealthAsync());
+        
+    private async Task CallEndWar()
+        => await InvokeApi(async () => await Api.GetGlobalEndWarAsync());
+
+    private async Task CallExtendPot()
+        => await InvokeApi(async () => await Api.ExtendCorporatePotAsync(bonusDays));
+
+    private async Task CallHrEmployed()
+        => await InvokeApi(async () => await Api.GetHrEmployedAsync());
+
+    private async Task InvokeApi(Func<Task<string>> action)
+    {
+        loading = true; result = null; error = null;
+        try
+        {
+            result = await action();
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+            Logger.LogError(ex, "API invocation failed");
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+}
