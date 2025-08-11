@@ -254,3 +254,72 @@ builder.Services.AddAuthorization(options =>
 ```
 
 </details>
+
+
+
+
+<summary><details>Proper RealmRoles to .Net ROLES Mapping</details>  
+
+Correct Keycloak UI Path for Realm Roles → Top-Level role Claim
+1. You want your realm roles to appear as a top-level claim (role) in the JWT.
+2. Your roles are defined at the realm level (not client roles).
+That’s correct and matches best practice for resource server authZ.
+Where to Add the Protocol Mapper?
+In Keycloak 26.x:
+
+You add mappers to a Client Scope (usually the -dedicated scope for your client).
+You do NOT add mappers to the client itself, but to the client’s assigned scope.
+Step-by-Step: Add Mapper for Realm Roles in wiscodev-api
+Clients → Select wiscodev-api
+
+Client Scopes tab → Find or select wiscodev-api-dedicated
+
+Click on wiscodev-api-dedicated to edit it.
+Mappers tab (within the client scope) → Add Mapper
+
+Click Add Mapper.
+You will see:
+From predefined mappers
+By configuration
+Best Practice: Use “By configuration”
+
+“Predefined mappers” is for built-in defaults, but for custom flattening of realm roles, choose By configuration.
+Mapper Settings
+Mapper Type: User Realm Role
+Name: role (or roles)
+Token Claim Name: role
+Claim JSON Type: String
+Add to ID token: ON (for SPA clients)
+Add to Access token: ON (for API clients)
+Multivalued: ON
+Repeat for wiscodev-spa
+Do the same for the wiscodev-spa-dedicated client scope.
+This ensures your SPA and API tokens both have top-level role claims.
+Summary Table
+Step	Action
+Clients → Select client	wiscodev-api
+Client Scopes → Select client scope (dedicated)	wiscodev-api-dedicated
+Client Scope → Mappers tab → Add Mapper	By configuration
+Mapper Type	User Realm Role
+Token Claim Name	role
+Multivalued	ON
+Add to Access/ID token	ON
+Result
+Your JWT will now include:
+JSON
+"role": [
+  "SystemAdmin",
+  "Admin",
+  ...
+]
+.NET 9 will recognize these as role claims, enabling [Authorize(Roles="SystemAdmin")] and .RequireRole("SystemAdmin").
+References
+Keycloak Docs: Protocol Mappers (Client Scope)
+Your repo’s Readme: Claims Based Authorization
+TL;DR:
+
+Use the Client Scope → Mappers → Add Mapper (By configuration) path.
+Select User Realm Role as the type.
+Repeat for SPA and API client scopes.
+Let me know if you want a checklist or screenshots for this UI flow!
+</details>

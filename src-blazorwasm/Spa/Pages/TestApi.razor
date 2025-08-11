@@ -7,6 +7,8 @@
 @inject Spa.Services.IWiscodevApiClient Api
 @inject NavigationManager Nav
 @inject ILogger<TestApi> Logger
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IJSRuntime JS
 
 <PageTitle>Test API</PageTitle>
 
@@ -21,6 +23,7 @@
             <input class="form-control d-inline-block w-auto me-2" type="number" min="0" @bind="bonusDays" />
             <button class="btn btn-secondary me-2" @onclick="CallExtendPto" disabled="@(loading)">/corporate/pto/extend/{bonusDays}</button>
             <button class="btn btn-info" @onclick="CallHrEmployed" disabled="@(loading)">/hr/employed</button>
+            <button class="btn btn-warning ms-2" @onclick="DumpClaims">Dump Claims</button>
         </div>
         @if (loading)
         {
@@ -77,5 +80,23 @@
         {
             loading = false;
         }
+    }
+
+    private async Task DumpClaims()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        var claims = user.Claims.Select(c => new { c.Type, c.Value }).ToList();
+        var roles = user.Claims.Where(c => c.Type == "role" || c.Type == "roles").Select(c => c.Value).ToList();
+        var permissions = user.Claims.Where(c => c.Type.Contains("permission")).Select(c => c.Value).ToList();
+        var audience = user.Claims.Where(c => c.Type == "aud" || c.Type == "audience").Select(c => c.Value).ToList();
+
+        var dump = new {
+            Claims = claims,
+            Roles = roles,
+            Permissions = permissions,
+            Audience = audience
+        };
+        await JS.InvokeVoidAsync("console.log", dump);
     }
 }
