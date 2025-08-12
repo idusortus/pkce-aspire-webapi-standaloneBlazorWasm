@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "eec92e95-808e-43d2-afdc-794e4ca5dd7a",
+		"name": "Keycloak",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6615955",
+		"_collection_link": "https://future-stateconsulting.postman.co/workspace/LuckyDog~34f9d043-1c95-40b6-8925-562011f99091/collection/6615955-eec92e95-808e-43d2-afdc-794e4ca5dd7a?action=share&source=collection_link&creator=6615955"
+	},
+	"item": [
+		{
+			"name": "hostAPI Health",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ6c0R5V003T0lPVUxXT0Y4NkxxVmpoUzc5Z0FRYmdmOEgtU0tMSXE5cm1rIn0.eyJleHAiOjE3NTQ0MTIyNzYsImlhdCI6MTc1NDQxMTk3NiwianRpIjoib25ydHJvOmNmOTI2NjJmLTMyZTgtNGYwNi1iYWExLWJmNzIzNjhhYjFiMSIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9yZWFsbXMvcXVvdGVzIiwiYXVkIjpbInJlYWxtLW1hbmFnZW1lbnQiLCJicm9rZXIiLCJhY2NvdW50Il0sInN1YiI6ImM4MTJiNGM4LTkyYTAtNGJkYS04ZDdmLWJjZDY3ZTMzZmYxMSIsInR5cCI6IkJlYXJlciIsImF6cCI6InF1b3Rlcy1wdWJsaWMtY2xpZW50Iiwic2lkIjoiZGNlNDEwNjMtYzQwOS00NGE5LTgxOWMtODM3ZWEzOTA0YjFkIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJkZWZhdWx0LXJvbGVzLXF1b3RlcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsicmVhbG0tbWFuYWdlbWVudCI6eyJyb2xlcyI6WyJ2aWV3LXJlYWxtIiwidmlldy1pZGVudGl0eS1wcm92aWRlcnMiLCJtYW5hZ2UtaWRlbnRpdHktcHJvdmlkZXJzIiwiaW1wZXJzb25hdGlvbiIsInJlYWxtLWFkbWluIiwiY3JlYXRlLWNsaWVudCIsIm1hbmFnZS11c2VycyIsInF1ZXJ5LXJlYWxtcyIsInZpZXctYXV0aG9yaXphdGlvbiIsInF1ZXJ5LWNsaWVudHMiLCJxdWVyeS11c2VycyIsIm1hbmFnZS1ldmVudHMiLCJtYW5hZ2UtcmVhbG0iLCJ2aWV3LWV2ZW50cyIsInZpZXctdXNlcnMiLCJ2aWV3LWNsaWVudHMiLCJtYW5hZ2UtYXV0aG9yaXphdGlvbiIsIm1hbmFnZS1jbGllbnRzIiwicXVlcnktZ3JvdXBzIl19LCJicm9rZXIiOnsicm9sZXMiOlsicmVhZC10b2tlbiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsInZpZXctYXBwbGljYXRpb25zIiwidmlldy1jb25zZW50Iiwidmlldy1ncm91cHMiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsIm1hbmFnZS1jb25zZW50IiwiZGVsZXRlLWFjY291bnQiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJzYW0gam9obnNvbiIsInByZWZlcnJlZF91c2VybmFtZSI6ImlkdXNvcnR1c0BnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoic2FtIiwiZmFtaWx5X25hbWUiOiJqb2huc29uIiwiZW1haWwiOiJpZHVzb3J0dXNAZ21haWwuY29tIn0.ViLPmiG3rtwUviQdvfENSuuXq0SqYx8ZAMaZPIsan9W4xv7yHmBLaMuAg_lcgvXM8Yy4gmcvdFnpXqZtnNjmVqefDxmYp4i3P0_r35SdYyz_pEgUM1o5ch311VMwylahnpsqP2I-CVDjrzf1Hi67_fIj70FjffcRiwEZPkOSm8gyOw1skYqXn6NOgyq8zdV2CnGUUBavRhjhSnUd3jIlt78WiAbfDBjaEfVffR5jHNGNYbv31-7SP7rJJw8UrGRzcZBcwEIvPs4G5rLNm7zIs-_7bT07UacXkwQAL_IOcA8GSVRjhaeS16XB_i0xm25aHCNCMZKpDjhpqGol7Bf_PQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{hostApi}}/health",
+					"host": [
+						"{{hostApi}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetKeycloakUsers PKCE",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostKeycloak}}/admin/realms/{{realmKeycloak}}/users",
+					"host": [
+						"{{hostKeycloak}}"
+					],
+					"path": [
+						"admin",
+						"realms",
+						"{{realmKeycloak}}",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "(NotParentAuth) GetUserByID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessTokenUrl",
+							"value": "{{hostKeycloak}}/realms/{{realmKeycloak}}/protocol/openid-connect/token",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "wiscodev-postman",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "{{hostKeycloak}}/realms/{{realmKeycloak}}/protocol/openid-connect/auth",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "openid profile email",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "Keycloak PKCE Aspire",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "https://oauth.pstmn.io/v1/callback",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "authorization_code_with_pkce",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{hostKeycloak}}/admin/realms/{{realmKeycloak}}/users/2e5ded9d-f5e7-49cf-86cb-8a69dcc3f19b",
+					"host": [
+						"{{hostKeycloak}}"
+					],
+					"path": [
+						"admin",
+						"realms",
+						"{{realmKeycloak}}",
+						"users",
+						"2e5ded9d-f5e7-49cf-86cb-8a69dcc3f19b"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "refreshRequestParams",
+				"value": [],
+				"type": "any"
+			},
+			{
+				"key": "tokenRequestParams",
+				"value": [],
+				"type": "any"
+			},
+			{
+				"key": "authRequestParams",
+				"value": [],
+				"type": "any"
+			},
+			{
+				"key": "tokenName",
+				"value": "Keycloak PKCE Aspire",
+				"type": "string"
+			},
+			{
+				"key": "challengeAlgorithm",
+				"value": "S256",
+				"type": "string"
+			},
+			{
+				"key": "scope",
+				"value": "openid profile email",
+				"type": "string"
+			},
+			{
+				"key": "redirect_uri",
+				"value": "https://oauth.pstmn.io/v1/callback",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "authorization_code_with_pkce",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "wiscodev-postman",
+				"type": "string"
+			},
+			{
+				"key": "authUrl",
+				"value": "{{hostKeycloak}}/realms/{{realmKeycloak}}/protocol/openid-connect/auth",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "client_authentication",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "{{hostKeycloak}}/realms/{{realmKeycloak}}/protocol/openid-connect/token",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
