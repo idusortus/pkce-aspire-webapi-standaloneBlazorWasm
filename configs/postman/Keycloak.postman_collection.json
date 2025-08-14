@@ -4,7 +4,7 @@
 		"name": "Keycloak",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "6615955",
-		"_collection_link": "https://future-stateconsulting.postman.co/workspace/LuckyDog~34f9d043-1c95-40b6-8925-562011f99091/collection/6615955-eec92e95-808e-43d2-afdc-794e4ca5dd7a?action=share&source=collection_link&creator=6615955"
+		"_collection_link": "https://future-stateconsulting.postman.co/workspace/Kecloak-%252B-LDog~34f9d043-1c95-40b6-8925-562011f99091/collection/6615955-eec92e95-808e-43d2-afdc-794e4ca5dd7a?action=share&source=collection_link&creator=6615955"
 	},
 	"item": [
 		{
@@ -67,56 +67,6 @@
 				"disableBodyPruning": true
 			},
 			"request": {
-				"auth": {
-					"type": "oauth2",
-					"oauth2": [
-						{
-							"key": "accessTokenUrl",
-							"value": "{{hostKeycloak}}/realms/{{realmKeycloak}}/protocol/openid-connect/token",
-							"type": "string"
-						},
-						{
-							"key": "clientId",
-							"value": "wiscodev-postman",
-							"type": "string"
-						},
-						{
-							"key": "authUrl",
-							"value": "{{hostKeycloak}}/realms/{{realmKeycloak}}/protocol/openid-connect/auth",
-							"type": "string"
-						},
-						{
-							"key": "scope",
-							"value": "openid profile email",
-							"type": "string"
-						},
-						{
-							"key": "tokenName",
-							"value": "Keycloak PKCE Aspire",
-							"type": "string"
-						},
-						{
-							"key": "useBrowser",
-							"value": false,
-							"type": "boolean"
-						},
-						{
-							"key": "redirect_uri",
-							"value": "https://oauth.pstmn.io/v1/callback",
-							"type": "string"
-						},
-						{
-							"key": "grant_type",
-							"value": "authorization_code_with_pkce",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						}
-					]
-				},
 				"method": "GET",
 				"header": [],
 				"body": {
@@ -124,7 +74,7 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "{{hostKeycloak}}/admin/realms/{{realmKeycloak}}/users/2e5ded9d-f5e7-49cf-86cb-8a69dcc3f19b",
+					"raw": "{{hostKeycloak}}/admin/realms/{{realmKeycloak}}/users/46fa1a59-3ca0-4763-b43d-b8de9346fb8f",
 					"host": [
 						"{{hostKeycloak}}"
 					],
@@ -133,7 +83,7 @@
 						"realms",
 						"{{realmKeycloak}}",
 						"users",
-						"2e5ded9d-f5e7-49cf-86cb-8a69dcc3f19b"
+						"46fa1a59-3ca0-4763-b43d-b8de9346fb8f"
 					]
 				}
 			},

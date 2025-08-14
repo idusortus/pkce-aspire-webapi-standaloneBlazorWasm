@@ -15,8 +15,8 @@ builder.Services.AddAuthentication().AddKeycloakJwtBearer("keycloak", realm: "wi
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("SystemAdminOnly", policy => policy.RequireRole("SystemAdmin"));
-    options.AddPolicy("TheirMonkeysTheirCircus", policy => policy.RequireRole("SystemAdmin"));
+    options.AddPolicy("SystemAdminOnly", policy => policy.RequireRole("systemadmin"));
+    options.AddPolicy("TheirMonkeysTheirCircus", policy => policy.RequireRole("systemadmin"));
     options.AddPolicy("AbleToEndWar", policy => policy.RequireClaim("CanCreateWhirledPeas", "true"));
 }); // Endpoint policies
 

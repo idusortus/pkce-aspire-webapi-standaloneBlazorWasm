@@ -26,8 +26,6 @@ builder.Services.AddOidcAuthentication(options =>
     options.ProviderOptions.Authority = KEYCLOAK_EXPOSED_PORT + "/realms/wiscodev";
     options.ProviderOptions.ClientId = "wiscodev-spa";
     options.ProviderOptions.ResponseType = "code";
-    options.ProviderOptions.DefaultScopes.Add("wiscodev:tests:read");//
-    options.ProviderOptions.DefaultScopes.Add("wiscodev:tests:write");//
 });
 
 await builder.Build().RunAsync();

@@ -1,0 +1,173 @@
+{
+  "clientId": "wiscodev-spa",
+  "name": "",
+  "description": "",
+  "rootUrl": "",
+  "adminUrl": "",
+  "baseUrl": "",
+  "surrogateAuthRequired": false,
+  "enabled": true,
+  "alwaysDisplayInConsole": false,
+  "clientAuthenticatorType": "client-secret",
+  "redirectUris": [
+    "https://localhost:7059/authentication/login-callback"
+  ],
+  "webOrigins": [
+    "https://localhost:7059"
+  ],
+  "notBefore": 0,
+  "bearerOnly": false,
+  "consentRequired": false,
+  "standardFlowEnabled": true,
+  "implicitFlowEnabled": false,
+  "directAccessGrantsEnabled": false,
+  "serviceAccountsEnabled": false,
+  "publicClient": true,
+  "frontchannelLogout": true,
+  "protocol": "openid-connect",
+  "attributes": {
+    "request.object.signature.alg": "any",
+    "request.object.encryption.alg": "any",
+    "client.introspection.response.allow.jwt.claim.enabled": "false",
+    "standard.token.exchange.enabled": "false",
+    "post.logout.redirect.uris": "https://localhost:7059/authentication/logout-callback",
+    "frontchannel.logout.session.required": "true",
+    "oauth2.device.authorization.grant.enabled": "false",
+    "backchannel.logout.revoke.offline.tokens": "false",
+    "use.refresh.tokens": "true",
+    "realm_client": "false",
+    "oidc.ciba.grant.enabled": "false",
+    "client.use.lightweight.access.token.enabled": "false",
+    "backchannel.logout.session.required": "true",
+    "request.object.required": "not required",
+    "client_credentials.use_refresh_token": "false",
+    "access.token.header.type.rfc9068": "false",
+    "tls.client.certificate.bound.access.tokens": "false",
+    "require.pushed.authorization.requests": "false",
+    "acr.loa.map": "{}",
+    "display.on.consent.screen": "false",
+    "request.object.encryption.enc": "any",
+    "pkce.code.challenge.method": "S256",
+    "token.response.type.bearer.lower-case": "false"
+  },
+  "authenticationFlowBindingOverrides": {},
+  "fullScopeAllowed": true,
+  "nodeReRegistrationTimeout": -1,
+  "protocolMappers": [
+    {
+      "name": "CanCreateQuote",
+      "protocol": "openid-connect",
+      "protocolMapper": "oidc-usermodel-attribute-mapper",
+      "consentRequired": false,
+      "config": {
+        "aggregate.attrs": "true",
+        "introspection.token.claim": "true",
+        "userinfo.token.claim": "true",
+        "user.attribute": "CanCreateQuote",
+        "id.token.claim": "true",
+        "lightweight.claim": "false",
+        "access.token.claim": "true",
+        "claim.name": "CanCreateQuote",
+        "jsonType.label": "boolean"
+      }
+    },
+    {
+      "name": "CanReadQuote",
+      "protocol": "openid-connect",
+      "protocolMapper": "oidc-usermodel-attribute-mapper",
+      "consentRequired": false,
+      "config": {
+        "aggregate.attrs": "true",
+        "introspection.token.claim": "true",
+        "userinfo.token.claim": "true",
+        "user.attribute": "CanReadQuote",
+        "id.token.claim": "true",
+        "lightweight.claim": "false",
+        "access.token.claim": "true",
+        "claim.name": "CanReadQuote",
+        "jsonType.label": "boolean"
+      }
+    },
+    {
+      "name": "Wiscodev API",
+      "protocol": "openid-connect",
+      "protocolMapper": "oidc-audience-mapper",
+      "consentRequired": false,
+      "config": {
+        "included.client.audience": "wiscodev-api",
+        "id.token.claim": "true",
+        "lightweight.claim": "false",
+        "access.token.claim": "true",
+        "introspection.token.claim": "true"
+      }
+    },
+    {
+      "name": "CEO",
+      "protocol": "openid-connect",
+      "protocolMapper": "oidc-usermodel-attribute-mapper",
+      "consentRequired": false,
+      "config": {
+        "introspection.token.claim": "true",
+        "userinfo.token.claim": "true",
+        "user.attribute": "CEO",
+        "id.token.claim": "true",
+        "lightweight.claim": "false",
+        "access.token.claim": "true",
+        "claim.name": "CEO",
+        "jsonType.label": "boolean"
+      }
+    },
+    {
+      "name": "CanDeleteQuote",
+      "protocol": "openid-connect",
+      "protocolMapper": "oidc-usermodel-attribute-mapper",
+      "consentRequired": false,
+      "config": {
+        "introspection.token.claim": "true",
+        "userinfo.token.claim": "true",
+        "user.attribute": "CanDeleteQuote",
+        "id.token.claim": "true",
+        "lightweight.claim": "false",
+        "access.token.claim": "true",
+        "claim.name": "CanDeleteQuote",
+        "jsonType.label": "String"
+      }
+    },
+    {
+      "name": "CanCreateWhirledPeas",
+      "protocol": "openid-connect",
+      "protocolMapper": "oidc-usermodel-attribute-mapper",
+      "consentRequired": false,
+      "config": {
+        "introspection.token.claim": "true",
+        "userinfo.token.claim": "true",
+        "user.attribute": "CanCreateWhirledPeas",
+        "id.token.claim": "true",
+        "lightweight.claim": "false",
+        "access.token.claim": "true",
+        "claim.name": "CanCreateWhirledPeas",
+        "jsonType.label": "boolean"
+      }
+    }
+  ],
+  "defaultClientScopes": [
+    "web-origins",
+    "acr",
+    "profile",
+    "roles",
+    "basic",
+    "email"
+  ],
+  "optionalClientScopes": [
+    "address",
+    "phone",
+    "offline_access",
+    "organization",
+    "microprofile-jwt"
+  ],
+  "access": {
+    "view": true,
+    "configure": true,
+    "manage": true
+  }
+}

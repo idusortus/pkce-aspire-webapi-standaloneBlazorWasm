@@ -319,3 +319,6 @@ Use the Client Scope → Mappers → Add Mapper (By configuration) path.
 Select User Realm Role as the type.
 Repeat for SPA and API client scopes.
 </details>
+
+
+- Check Keycloak Token

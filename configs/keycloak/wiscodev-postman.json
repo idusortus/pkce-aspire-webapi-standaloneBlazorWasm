@@ -52,6 +52,21 @@
   "authenticationFlowBindingOverrides": {},
   "fullScopeAllowed": true,
   "nodeReRegistrationTimeout": -1,
+  "protocolMappers": [
+    {
+      "name": "Wiscodev API",
+      "protocol": "openid-connect",
+      "protocolMapper": "oidc-audience-mapper",
+      "consentRequired": false,
+      "config": {
+        "included.client.audience": "wiscodev-api",
+        "id.token.claim": "true",
+        "lightweight.claim": "false",
+        "access.token.claim": "true",
+        "introspection.token.claim": "true"
+      }
+    }
+  ],
   "defaultClientScopes": [
     "web-origins",
     "acr",
@@ -63,8 +78,8 @@
   "optionalClientScopes": [
     "address",
     "phone",
-    "organization",
     "offline_access",
+    "organization",
     "microprofile-jwt"
   ],
   "access": {
