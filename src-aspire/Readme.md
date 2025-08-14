@@ -34,6 +34,7 @@ var keycloak = builder.AddKeycloak("keycloak", 8081) // <-- This is usually 8080
     .WithExternalHttpEndpoints();
 ```
 
+<details><summary>Basic Keycloak Configuration</summary>  
 
 ## Configure Keycloak Instance 
 - Ensure Docker is running
@@ -88,18 +89,7 @@ var keycloak = builder.AddKeycloak("keycloak", 8081) // <-- This is usually 8080
     - click `Client scopes` tab
       - Check the boxes for the two scopes defined earlier and click [Add] > Optional
 
-#### Add Keycloak User (basic)
-- Email verified: Toggle to ON (unless you're wiring up an email service)
-- Fill in remaining attributes & click [Create]
-  - test@test.com
-  - 123
-- Click 'Credentials' tab
-  - Temporary: Toggle to off
-  - [Save]
-#### Add Keycloak User (Admin) 
-- Like above, but set realm-management realm-admin role
-- admin@test.com / 123
-  - Useful for hitting the Keycloak Admin REST API 
+</details>  
 
 
 #### Configure Keycloak for use in Api/Program.cs
@@ -111,8 +101,9 @@ builder.Services.AddAuthentication().AddKeycloakJwtBearer("keycloak", realm: "wi
 }); // KeyCloak (Aspire.Keycloak.Authentication)
 ```
 
-## Blazorwasm SPA
-- Nothing fancy. You'll have to inspect the browser console. AppConfig or WWWRoot/appsettings.Development.json or env client secrets would be better than constants.
+#### Configure Keycloak for use in Blazor/Program.cs
+- You'll have to inspect the browser console for Tokens. 
+- AppConfig or WWWRoot/appsettings.Development.json or env client secrets would be better than constants.
 ```csharp
 const string WEBAPI_HTTPS_URL = "https://localhost:7044";
 const string KEYCLOAK_EXPOSED_PORT = "http://localhost:8081";
@@ -131,8 +122,6 @@ builder.Services.AddOidcAuthentication(options =>
     options.ProviderOptions.Authority = KEYCLOAK_EXPOSED_PORT + "/realms/wiscodev";
     options.ProviderOptions.ClientId = "wiscodev-spa";
     options.ProviderOptions.ResponseType = "code";
-    options.ProviderOptions.DefaultScopes.Add("wiscodev:tests:read");//
-    options.ProviderOptions.DefaultScopes.Add("wiscodev:tests:write");//
 });
 ```
 
@@ -188,12 +177,12 @@ builder.Services.AddOidcAuthentication(options =>
 </details>
 
 
-## Api Code Changes
+## Example Endpoint Policiy Definitions
 ```csharp
 // Api/Program.cs
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("Admin", policy => policy.RequireClaim("CanCreateQuote", "true"));
+    options.AddPolicy("Admin", policy => policy.RequireRole("admin"));
     options.AddPolicy("AbleToEndWar", policy => policy.RequireClaim("CanCreateWhirledPeas", "true"));
 }); // Endpoint policies
 
@@ -255,17 +244,196 @@ builder.Services.AddAuthorization(options =>
 
 </details>
 
+<details><summary>Complete Keycloak 26.2 Configuration Guide for a .NET API and Blazor SPA</summary>
 
 
+## Complete Keycloak 26.2 Configuration Guide for a .NET API and Blazor SPA
 
-<summary><details>Proper RealmRoles to .Net ROLES Mapping</details>  
+This guide walks through the entire process of setting up a new Keycloak realm to provide authentication and authorization for a distributed system consisting of:
+*   A **.NET 9 Web API** (the Resource Server).
+*   A **standalone Blazor WebAssembly App** (the SPA Client).
+
+We will use a placeholder name of **"wiscodev"** for the project.
+
+### Section 1: Create the New Realm
+
+This is the top-level container for all your users, clients, and roles.
+
+1.  Log in to your Keycloak Admin Console.
+2.  Hover over the realm name in the top-left corner (initially "master") and click **Create Realm**.
+3.  **Realm name:** `wiscodev`.
+4.  Click **Create**. You will be automatically switched into the new `wiscodev` realm.
+
+### Section 2: Create Hierarchical Realm Roles
+
+These are the business-level roles. We will create them with inheritance (composition) so that higher roles automatically get the permissions of lower ones.
+
+1.  From the left menu, select **Realm Roles**.
+2.  Click **Create role**.
+    *   **Role name:** `guest`. Click **Save**.
+3.  Click **Create role** again.
+    *   **Role name:** `user`. Click **Save**.
+4.  Click on the newly created `user` role.
+    *   Go to the **Associated roles** tab.
+    *   In the "Filter by realm roles" box, find and select `guest`.
+    *   Click **Add selected**. The `user` role now inherits from `guest`.
+5.  Repeat this process for `admin` (inheriting from `user`) and `systemadmin` (inheriting from `admin`).
+
+**Result:** You have a role hierarchy: `guest` -> `user` -> `admin` -> `systemadmin`.
+
+### Section 3: Create Nested Groups and Map Roles
+
+Groups are used to manage users. The group hierarchy will mirror the role hierarchy to enable attribute inheritance.
+
+1.  From the left menu, select **Groups**.
+2.  Click **Create group**.
+    *   **Name:** `guests`. Click **Create**.
+3.  Click on the new `guests` group, go to the **Role Mappings** tab, and assign the `guest` realm role.
+4.  Go back to the main **Groups** page. **Select the `guests` group** from the list.
+5.  With `guests` selected, click **Create group** to create a child group.
+    *   **Name:** `users`. Click **Create**.
+6.  Click on the new `users` child group, go to **Role Mappings**, and assign the `user` realm role.
+7.  Repeat this process, always selecting the parent group first before creating the child:
+    *   Create `admins` as a child of `users` and map the `admin` role to it.
+    *   Create `systemadmins` as a child of `admins` and map the `systemadmin` role to it.
+
+**Result:** You have a group hierarchy that mirrors your role hierarchy.
+
+### Section 4: Assign Granular Permissions as Group Attributes
+
+This is the source of truth for your fine-grained claims.
+
+1.  Navigate to **Groups**.
+2.  Select the **`guests`** group, go to the **Attributes** tab, and add:
+    *   **Key:** `CanReadQuote`
+    *   **Value:** `true`
+    *   Click **Save**.
+3.  Select the **`users`** group, go to the **Attributes** tab, and add:
+    *   **Key:** `CanCreateQuote`
+    *   **Value:** `true`
+    *   Click **Save**.
+4.  Select the **`admins`** group, go to the **Attributes** tab, and add:
+    *   **Key:** `CanDeleteQuote`
+    *   **Value:** `true`
+    *   Click **Save**.
+
+**Result:** A user placed in the `admins` group will now inherit all three attributes from its parent chain.
+
+### Section 5: Configure the Clients
+
+You need two separate clients: one to represent the API and one for the Blazor app.
+
+#### A. The Web API Client (`wiscodev-api`)
+
+This client exists almost exclusively to be an **audience**. It is a passive resource server.
+
+1.  Navigate to **Clients** and click **Create client**.
+2.  **Client ID:** `wiscodev-api`. Click **Next**.
+3.  On the "Capability config" screen, **leave all toggles OFF**.
+    *   `Client authentication`: **OFF**.
+    *   All authorization flows should be disabled.
+4.  Click **Save**. That's it. This client is done.
+
+#### B. The Blazor SPA Client (`wiscodev-spa`)
+
+This is the active public client that will initiate logins.
+
+1.  Navigate to **Clients** and click **Create client**.
+2.  **Client ID:** `wiscodev-spa`. Click **Next**.
+3.  **Capability config:**
+    *   `Client authentication`: **OFF** (This makes it a public client).
+    *   `Standard flow`: **ON** (This enables the OIDC Authorization Code Flow).
+    *   Leave all other flows disabled.
+4.  Click **Next**.
+5.  **Login settings:**
+    *   **Valid redirect URIs:** `http://localhost:5000/authentication/login-callback` (Replace port if necessary). Add any other production URLs later.
+    *   **Web origins:** `http://localhost:5000`. This is crucial for preventing CORS errors.
+6.  Click **Save**.
+7.  After saving, go to the **Advanced** tab of the `wiscodev-spa` client.
+8.  Set **PKCE Code Challenge Method** to `S256`.
+9.  Click **Save**.
+
+### Section 6: Configure Mappers (The Bridge)
+
+This is the final and most important step, where you configure what goes inside the JWT.
+
+#### A. Flatten Realm Roles for .NET Compatibility
+
+1.  From the main menu, go to **Client Scopes**.
+2.  Click on the built-in scope named **`roles`**.
+3.  Go to the **Mappers** tab.
+4.  Click on the mapper named `realm roles`.
+5.  Change the **Token Claim Name** from `realm_access.roles` to simply **`roles`**.
+6.  Turn **Add to ID token** to **ON**. (The Blazor app needs this to see roles).
+7.  Ensure **Add to access token** is also **ON**.
+8.  Click **Save**.
+
+#### B. Configure Mappers for the SPA Client
+
+These mappers will be added to the SPA's dedicated scope to ensure they only apply when logging in through this client.
+
+1.  Navigate to **Clients** -> **`wiscodev-spa`** -> **Client Scopes** tab.
+2.  Click on the scope named **`wiscodev-spa-dedicated`**.
+3.  Click the **Add Mapper** button.
+
+**Mapper 1: Add API Audience (`aud`)**
+1.  Click **Add mapper** -> **By configuration** -> **Audience**.
+2.  **Name:** `api-audience`.
+3.  **Included Client Audience:** Select `wiscodev-api` from the dropdown.
+4.  **Add to access token:** **ON**.
+5.  Click **Save**.
+
+**Mapper 2: Map Group Attributes to Claims**
+You must create one mapper for each permission attribute.
+
+1.  Click **Add mapper** -> **By configuration** -> **User Attribute**.
+2.  Configure for `CanReadQuote`:
+    *   **Name:** `CanReadQuote`
+    *   **User Attribute:** `CanReadQuote`
+    *   **Token Claim Name:** `CanReadQuote`
+    *   **Claim JSON Type:** `boolean`
+    *   **Add to access token:** **ON**
+3.  Click **Save**.
+4.  **Repeat this process**, creating two more `User Attribute` mappers for `CanCreateQuote` and `CanDeleteQuote`.
+
+---
+
+### Verification
+
+Your Keycloak realm is now fully configured. To verify, create a test user and add them to the `admins` group. Use the Postman or Scalar flow for the `wiscodev-spa` client to get an access token. Decode the JWT using a tool like [jwt.io](https://jwt.io).
+
+The decoded payload should contain:
+
+```json
+{
+  ...
+  "aud": [
+    "wiscodev-api",
+    "account"
+  ],
+  "roles": [
+    "guest",
+    "user",
+    "admin"
+  ],
+  "CanReadQuote": true,
+  "CanCreateQuote": true,
+  "CanDeleteQuote": true,
+  ...
+}
+```
+
+This token is now perfectly formed for consumption by both your Blazor SPA (which will use the `roles` claim) and your .NET API (which will use the `aud` and granular `Can...` claims).
+
+</details>
+
+
+<details><summary>Proper Keycloak Realm Roles to .Net ROLES Mapping</summary>
 
 Correct Keycloak UI Path for Realm Roles → Top-Level role Claim
 1. You want your realm roles to appear as a top-level claim (role) in the JWT.
-2. Your roles are defined at the realm level (not client roles).
-That’s correct and matches best practice for resource server authZ.
-Where to Add the Protocol Mapper?
-In Keycloak 26.x:
+2. Realm roles are defined at the realm level (not client roles).
+(Can also map roles to clients, but that's not the focus here.))
 
 You add mappers to a Client Scope (usually the -dedicated scope for your client).
 You do NOT add mappers to the client itself, but to the client’s assigned scope.
