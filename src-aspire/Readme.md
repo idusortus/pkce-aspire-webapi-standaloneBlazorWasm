@@ -128,53 +128,8 @@ builder.Services.AddOidcAuthentication(options =>
 ## Set Audience for Client(s) !
 - Clients > client details > dedicated scopes > Mapper details > choose wiscodev-api
 
-# Claims Based Authorization (via Keycloak Attributes)
-<details>
-  <summary><strong>Configure Keycloak v26.2 Attributes (~Custom Claims)</strong></summary>
+# Claims Based Authorization (using Keycloak Attributes)
 
-  ### 1. Define the Attribute in the User Profile Schema
-  This makes the attribute available across the realm.
-
-  1.  Go to **Realm Settings** -> **User profile** tab.
-  2.  Click **Create attribute**.
-  3.  Fill out the form:
-      *   **Attribute[Name]:** `CanCreateWhirledPeas` (Machine-readable name for your API/mappers).
-      *   **Display name:** `Can create whirled peas` (Friendly label for the UI).
-      *   **Enabled when:** `Always`.
-      *   **Required:** `off`.
-      *   **Permissions -> Who can view?:** `Admin only`.
-      *   **Permissions -> Who can edit?:** `Admin only`.
-  4.  Click **Save**. Repeat for other custom claims.
-
-  ### 2. Map User Attribute to the Token
-  This ensures the attribute is included in the JWT when a user logs in.
-
-  > **TLDR;** @ Keycloak > Realm > Clients >  Client Scopes > *profile* > Mappers > Add Mapper > User Attribute
-
-
-  1.  Click the **Client Scopes** tab.
-  2.  Click the **`profile`** scope in the list. (will be hyperlinked, if not you're in the wrong view)
-  3.  On the `profile` scope's page, click its **Mappers** tab.
-  4.  Click **Add mapper** {by configuration / configure a new mapper... depends on prior config}.
-  > Steps won't be a 100% match if you have a `-dedicated` client, they're similar though :exclamation: TODO: *clean-up docs*
-  5.  Select **By configuration** -> **User Attribute** : *Map a custom user attribute to a token claim*.
-  6.  Fill out the form:
-      *   **Name:** `CanCreateWhirledPeas` (A descriptive name for this mapper).
-      *   **User Attribute:** `CanCreateWhirledPeas` (dropdown to the key from the user profile schema).
-      *   **Token Claim Name:** `CanCreateWhirledPeas` (The name of the claim in the JWT).
-      *   **Claim JSON Type:** `boolean`
-      *   **Add to access token, add to ID token, add to userinfo, add to token introspection:** **ON**
-        - The rest are off
-  7.  Click **Save**.
-
-  ### 3. Edit the Attribute for a Specific User
-  Now you can grant the permission to a user.
-
-  1.  Go to **Users** and select the user to edit.
-  2.  On the user's **Details** tab, you will see a new field with the display name you created (e.g., "Can Delete Quote").
-  3.  Enter the value (e.g., `true`) and click **Save**.
-
-</details>
 
 
 ## Example Endpoint Policiy Definitions
@@ -244,7 +199,7 @@ builder.Services.AddAuthorization(options =>
 
 </details>
 
-<details><summary>Complete Keycloak 26.2 Configuration Guide for a .NET API and Blazor SPA</summary>
+<details><summary><strong>Complete Keycloak 26.2 Configuration Guide for a .NET API and Blazor SPA</strong></summary>
 
 
 ## Complete Keycloak 26.2 Configuration Guide for a .NET API and Blazor SPA
@@ -428,12 +383,62 @@ This token is now perfectly formed for consumption by both your Blazor SPA (whic
 </details>
 
 
+
+
+---
+<details>
+  <summary>Configure Keycloak v26.2 Attributes (~Custom Claims)</summary>
+
+  ### 1. Define the Attribute in the User Profile Schema
+  This makes the attribute available across the realm.
+
+  1.  Go to **Realm Settings** -> **User profile** tab.
+  2.  Click **Create attribute**.
+  3.  Fill out the form:
+      *   **Attribute[Name]:** `CanCreateWhirledPeas` (Machine-readable name for your API/mappers).
+      *   **Display name:** `Can create whirled peas` (Friendly label for the UI).
+      *   **Enabled when:** `Always`.
+      *   **Required:** `off`.
+      *   **Permissions -> Who can view?:** `Admin only`.
+      *   **Permissions -> Who can edit?:** `Admin only`.
+  4.  Click **Save**. Repeat for other custom claims.
+
+  ### 2. Map User Attribute to the Token
+  This ensures the attribute is included in the JWT when a user logs in.
+
+  > **TLDR;** @ Keycloak > Realm > Clients >  Client Scopes > *profile* > Mappers > Add Mapper > User Attribute
+
+
+  1.  Click the **Client Scopes** tab.
+  2.  Click the **`profile`** scope in the list. (will be hyperlinked, if not you're in the wrong view)
+  3.  On the `profile` scope's page, click its **Mappers** tab.
+  4.  Click **Add mapper** {by configuration / configure a new mapper... depends on prior config}.
+  > Steps won't be a 100% match if you have a `-dedicated` client, they're similar though :exclamation: TODO: *clean-up docs*
+  5.  Select **By configuration** -> **User Attribute** : *Map a custom user attribute to a token claim*.
+  6.  Fill out the form:
+      *   **Name:** `CanCreateWhirledPeas` (A descriptive name for this mapper).
+      *   **User Attribute:** `CanCreateWhirledPeas` (dropdown to the key from the user profile schema).
+      *   **Token Claim Name:** `CanCreateWhirledPeas` (The name of the claim in the JWT).
+      *   **Claim JSON Type:** `boolean`
+      *   **Add to access token, add to ID token, add to userinfo, add to token introspection:** **ON**
+        - The rest are off
+  7.  Click **Save**.
+
+  ### 3. Edit the Attribute for a Specific User
+  Now you can grant the permission to a user.
+
+  1.  Go to **Users** and select the user to edit.
+  2.  On the user's **Details** tab, you will see a new field with the display name you created (e.g., "Can Delete Quote").
+  3.  Enter the value (e.g., `true`) and click **Save**.
+
+</details>  
+
 <details><summary>Proper Keycloak Realm Roles to .Net ROLES Mapping</summary>
 
 Correct Keycloak UI Path for Realm Roles → Top-Level role Claim
 1. You want your realm roles to appear as a top-level claim (role) in the JWT.
 2. Realm roles are defined at the realm level (not client roles).
-(Can also map roles to clients, but that's not the focus here.))
+(Can also map roles to clients, but that's not the focus here.)
 
 You add mappers to a Client Scope (usually the -dedicated scope for your client).
 You do NOT add mappers to the client itself, but to the client’s assigned scope.
@@ -486,7 +491,4 @@ References
 Use the Client Scope → Mappers → Add Mapper (By configuration) path.
 Select User Realm Role as the type.
 Repeat for SPA and API client scopes.
-</details>
-
-
-- Check Keycloak Token
+</details>  
