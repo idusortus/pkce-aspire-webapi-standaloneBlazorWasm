@@ -1,0 +1,63 @@
+<div class="jumbotron">
+  <h1>Welcome to the Keycloak Angular Client</h1>
+  <p class="lead">This Angular application integrates with Keycloak for authentication and communicates with a .NET Web API.</p>
+  
+  <div class="auth-status" [ngClass]="isLoggedIn ? 'authenticated' : 'unauthenticated'">
+    <strong>Authentication Status:</strong> 
+    <span *ngIf="isLoggedIn">Authenticated</span>
+    <span *ngIf="!isLoggedIn">Not Authenticated</span>
+  </div>
+
+  <div *ngIf="!isLoggedIn">
+    <p>Please log in to access the protected API endpoints.</p>
+    <button class="btn btn-primary btn-lg" (click)="login()">Log In</button>
+  </div>
+
+  <div *ngIf="isLoggedIn">
+    <p>You are currently logged in. You can navigate to the API Test page to try the different API endpoints.</p>
+    <a routerLink="/api-test" class="btn btn-primary btn-lg">Try API Endpoints</a>
+  </div>
+</div>
+
+<div *ngIf="isLoggedIn && userClaims" class="mt-5">
+  <h2>User Information</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h3>Roles</h3>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let role of userRoles">{{ role }}</li>
+            <li class="list-group-item" *ngIf="userRoles.length === 0">No roles assigned</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h3>Claims</h3>
+        </div>
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Claim</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let claim of getClaimEntries()">
+                <td>{{ claim[0] }}</td>
+                <td>{{ claim[1] | json }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

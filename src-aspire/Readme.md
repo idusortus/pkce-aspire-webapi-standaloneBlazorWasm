@@ -29,7 +29,7 @@ dotnet add Spa/ package microsoft.extensions.http
 
 #### Add Keycloak to Aspire (Host/AppHost.cs)
 ```csharp
-var keycloak = builder.AddKeycloak("keycloak", 8081) // <-- This is usually 8080
+var keycloak = builder.AddKeycloak("keycloak", 8081) // <-- This repo uses 8081 for Keycloak
     .WithDataVolume()
     .WithExternalHttpEndpoints();
 ```
@@ -341,15 +341,35 @@ These mappers will be added to the SPA's dedicated scope to ensure they only app
 **Mapper 2: Map Group Attributes to Claims**
 You must create one mapper for each permission attribute.
 
-1.  Click **Add mapper** -> **By configuration** -> **User Attribute**.
-2.  Configure for `CanReadQuote`:
-    *   **Name:** `CanReadQuote`
-    *   **User Attribute:** `CanReadQuote`
-    *   **Token Claim Name:** `CanReadQuote`
-    *   **Claim JSON Type:** `boolean`
-    *   **Add to access token:** **ON**
-3.  Click **Save**.
-4.  **Repeat this process**, creating two more `User Attribute` mappers for `CanCreateQuote` and `CanDeleteQuote`.
+1.  **Navigate to Clients:**
+    *   From the left menu, click on **Clients**.
+
+2.  **Select the `wiscodev-spa` Client:** (or wiscodev-angular, etc.)
+    *   Find and click on your Blazor application's client, `wiscodev-spa`, from the list.
+
+3.  **Go to Client Scopes:**
+    *   Click on the **Client Scopes** tab for your client.
+
+4.  **Select the Dedicated Scope:**
+    *   You will see a scope named `wiscodev-spa-dedicated`. This scope is for mappers that are specific to this client. Click on it.
+
+5.  **Add a New Mapper:**
+    *   You are now on the Mappers configuration page for the scope.
+    *   Click the **Add mapper** button.
+    *   From the dropdown list, select **By configuration**.
+    *   Choose the mapper type named **User Attribute**.
+
+6.  **Configure the Mapper:**
+    *   **Name:** Give it a clear, descriptive name. `CanDeleteQuote` is perfect.
+    *   **User Attribute:** `CanDeleteQuote`. This field is case-sensitive and must **exactly match the Key** you set on the group attribute in Part 1.
+    *   **Token Claim Name:** `CanDeleteQuote`. This defines what the claim will be named inside the final JWT.
+    *   **Claim JSON Type:** Set this to `boolean`. This ensures the value in the JWT is `true` (without quotes) instead of `"true"` (as a string).
+    *   **Add to access token:** This must be **ON**. Your Web API needs this claim in the access token to perform authorization.
+    *   **Add to ID token:** This can be **OFF**. Your SPA app's UI logic is based on roles, so it doesn't need this granular claim.
+
+7.  **Save the Mapper:**
+    *   Click the **Save** button.
+
 
 ---
 
@@ -492,3 +512,43 @@ Use the Client Scope → Mappers → Add Mapper (By configuration) path.
 Select User Realm Role as the type.
 Repeat for SPA and API client scopes.
 </details>  
+
+<details><summary>Keycloak: Adding Group Claims to Specific Client</summary>
+
+#### Part 2: Create a Mapper to Add the Attribute to the Token
+
+In this step, we tell Keycloak how to translate the group attribute into a claim for your specific client.
+
+1.  **Navigate to Clients:**
+    *   From the left menu, click on **Clients**.
+
+2.  **Select the `wiscodev-angular` Client:** (or wiscodev-spa, etc.)
+    *   Find and click on your Blazor application's client, `wiscodev-angular`, from the list.
+
+3.  **Go to Client Scopes:**
+    *   Click on the **Client Scopes** tab for your client.
+
+4.  **Select the Dedicated Scope:**
+    *   You will see a scope named `wiscodev-angular-dedicated`. This scope is for mappers that are specific to this client. Click on it.
+
+5.  **Add a New Mapper:**
+    *   You are now on the Mappers configuration page for the scope.
+    *   Click the **Add mapper** button.
+    *   From the dropdown list, select **By configuration**.
+    *   Choose the mapper type named **User Attribute**.
+
+6.  **Configure the Mapper:**
+    *   **Name:** Give it a clear, descriptive name. `CanDeleteQuote` is perfect.
+    *   **User Attribute:** `CanDeleteQuote`. This field is case-sensitive and must **exactly match the Key** you set on the group attribute in Part 1.
+    *   **Token Claim Name:** `CanDeleteQuote`. This defines what the claim will be named inside the final JWT.
+    *   **Claim JSON Type:** Set this to `boolean`. This ensures the value in the JWT is `true` (without quotes) instead of `"true"` (as a string).
+    *   **Add to access token:** This must be **ON**. Your Web API needs this claim in the access token to perform authorization.
+    *   **Add to ID token:** This can be **OFF**. Your SPA app's UI logic is based on roles, so it doesn't need this granular claim.
+
+7.  **Save the Mapper:**
+    *   Click the **Save** button.
+
+---
+
+
+</details>

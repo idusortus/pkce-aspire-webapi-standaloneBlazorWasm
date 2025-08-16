@@ -1,0 +1,106 @@
+<div class="container">
+  <h1>API Endpoint Testing</h1>
+  <p class="lead">This page allows you to test different API endpoints with various authorization requirements.</p>
+
+  <div class="row">
+    <!-- Health Endpoint - No Authentication Required -->
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h3>Health Endpoint</h3>
+          <small class="text-muted">No authentication required</small>
+        </div>
+        <div class="card-body">
+          <p>Tests the basic health endpoint that doesn't require authentication.</p>
+          <button class="btn btn-primary" (click)="checkHealth()">Test Health Endpoint</button>
+          
+          <div *ngIf="healthResult" class="api-result mt-3">
+            <pre>{{ healthResult | json }}</pre>
+          </div>
+          
+          <div *ngIf="healthError" class="api-result api-error mt-3">
+            <pre>{{ healthError }}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Employment Status - Authenticated Users -->
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h3>Employment Status</h3>
+          <small class="text-muted">Any authenticated user</small>
+        </div>
+        <div class="card-body">
+          <p>Checks if you are employed. Requires authentication.</p>
+          <button class="btn btn-primary" (click)="checkEmployment()">Check Employment</button>
+          
+          <div *ngIf="employmentResult" class="api-result mt-3">
+            <pre>{{ employmentResult | json }}</pre>
+          </div>
+          
+          <div *ngIf="employmentError" class="api-result api-error mt-3">
+            <pre>{{ employmentError }}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- PTO Extension - Requires System Admin Role -->
+    <div class="col-md-6 mb-4">
+      <div class="card" [ngClass]="{'text-muted': !hasCEORole}">
+        <div class="card-header">
+          <h3>Extend PTO</h3>
+          <small class="text-muted">Requires 'systemadmin' role</small>
+        </div>
+        <div class="card-body">
+          <p>Extends PTO for all employees. Requires systemadmin (CEO) role.</p>
+          <div class="mb-3">
+            <label for="ptoDays" class="form-label">Bonus Days:</label>
+            <input type="number" class="form-control" id="ptoDays" [(ngModel)]="ptoDays" min="1" max="30">
+          </div>
+          <button class="btn btn-primary" [disabled]="!hasCEORole" (click)="extendPTO()">Extend PTO</button>
+          
+          <div *ngIf="!hasCEORole" class="alert alert-warning mt-3">
+            You don't have the systemadmin role required to access this endpoint.
+          </div>
+          
+          <div *ngIf="ptoResult" class="api-result mt-3">
+            <pre>{{ ptoResult | json }}</pre>
+          </div>
+          
+          <div *ngIf="ptoError" class="api-result api-error mt-3">
+            <pre>{{ ptoError }}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- End War - Requires Special Claim -->
+    <div class="col-md-6 mb-4">
+      <div class="card" [ngClass]="{'text-muted': !canEndWar}">
+        <div class="card-header">
+          <h3>End War</h3>
+          <small class="text-muted">Requires 'CanCreateWhirledPeas' claim</small>
+        </div>
+        <div class="card-body">
+          <p>Ends all wars globally. Requires special claim.</p>
+          <button class="btn btn-primary" [disabled]="!canEndWar" (click)="endWar()">End War</button>
+          
+          <div *ngIf="!canEndWar" class="alert alert-warning mt-3">
+            You don't have the 'CanCreateWhirledPeas' claim required to access this endpoint.
+          </div>
+          
+          <div *ngIf="warResult" class="api-result mt-3">
+            <pre>{{ warResult | json }}</pre>
+          </div>
+          
+          <div *ngIf="warError" class="api-result api-error mt-3">
+            <pre>{{ warError }}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

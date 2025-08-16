@@ -1,0 +1,50 @@
+/* You can add global styles to this file, and also import other style files */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  padding: 20px;
+}
+
+.btn-space {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.auth-status {
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.auth-status.authenticated {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+}
+
+.auth-status.unauthenticated {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+.card {
+  margin-bottom: 20px;
+}
+
+.api-result {
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  margin-top: 15px;
+  white-space: pre-wrap;
+}
+
+.api-error {
+  background-color: #f8d7da;
+  color: #721c24;
+}

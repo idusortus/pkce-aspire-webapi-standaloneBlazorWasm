@@ -29,6 +29,14 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
+    
+    options.AddPolicy("AngularSpaPolicy", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
 });
 
 var app = builder.Build();
@@ -41,6 +49,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("BlazorSpaPolicy");
+app.UseCors("AngularSpaPolicy");
 app.MapEndpoints(); // Map implementors of IEndpoint
 app.MapScalarApiReference(); // Enable Scalar UI @ ../scalar/v1
 

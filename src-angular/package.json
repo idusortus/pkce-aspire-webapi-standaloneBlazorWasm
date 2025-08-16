@@ -1,0 +1,33 @@
+{
+  "name": "wiscodev-angular",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^20.1.7",
+    "@angular/common": "^20.1.7",
+    "@angular/compiler": "^20.1.7",
+    "@angular/core": "^20.1.7",
+    "@angular/forms": "^20.1.7",
+    "@angular/platform-browser": "^20.1.7",
+    "@angular/platform-browser-dynamic": "^20.1.7",
+    "@angular/router": "^20.1.7",
+    "keycloak-angular": "^20.0.0",
+    "keycloak-js": "^26.2.0",
+    "rxjs": "~7.8.2",
+    "tslib": "^2.6.0",
+    "zone.js": "^0.15.1"
+  },
+  "devDependencies": {
+  "@angular-devkit/build-angular": "^20.1.6",
+  "@angular/cli": "^20.1.6",
+  "@angular/compiler-cli": "^20.1.6",
+  "typescript": "5.8.3"
+  }
+}
