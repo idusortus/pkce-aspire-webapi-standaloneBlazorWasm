@@ -42,6 +42,13 @@ export class AuthService {
       // 2) inspect token payload for realm_access and resource_access
       const token = this.keycloakService.getKeycloakInstance()?.tokenParsed as any | undefined;
       if (token) {
+        // Direct roles array (some Keycloak configurations)
+        if (token.roles && Array.isArray(token.roles)) {
+          token.roles.forEach((r: any) => {
+            if (typeof r === 'string' && r.trim()) rolesSet.add(r.trim().toLowerCase());
+          });
+        }
+        
         // realm_access.roles
         if (token.realm_access && Array.isArray(token.realm_access.roles)) {
           token.realm_access.roles.forEach((r: any) => {
@@ -97,7 +104,22 @@ export class AuthService {
   }
 
   // Convenience helpers for common roles
-  public isSystemAdmin(): boolean { return this.hasRole('SystemAdmin'); }
+  public isSystemAdmin(): boolean { 
+    // First try the general hasRole check
+    if (this.hasRole('SystemAdmin')) return true;
+    
+    // Direct check as a backup - look at the exact JWT structure you showed
+    try {
+      const token = this.getUserClaims();
+      if (token?.roles && Array.isArray(token.roles)) {
+        return token.roles.some((r: string) => 
+          typeof r === 'string' && r.toLowerCase() === 'systemadmin');
+      }
+    } catch (e) {
+      console.error('Error in direct SystemAdmin role check:', e);
+    }
+    return false;
+  }
   public isAdmin(): boolean { return this.hasRole('Admin'); }
   public isPaidUser(): boolean { return this.hasRole('PaidUser'); }
   public isFreeUser(): boolean { return this.hasRole('FreeUser'); }

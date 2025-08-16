@@ -35,11 +35,24 @@ export class ApiTestComponent implements OnInit {
 
   async ngOnInit() {
     this.isLoggedIn = await this.authService.isLoggedIn();
+    console.log('isLoggedIn status:', this.isLoggedIn);
     if (this.isLoggedIn) {
   // grab normalized roles for display/debugging
   this.userRoles = this.authService.getRoles();
+  // Log detailed role information for debugging
+  console.log('Raw userRoles array:', this.userRoles);
+  console.log('Has SystemAdmin role?', this.authService.isSystemAdmin());
+  
+  // Get the raw token to check the exact structure
+  const tokenPayload = this.authService.getUserClaims();
+  console.log('JWT token payload (partial):', {
+    roles: tokenPayload?.roles,
+    realm_access: tokenPayload?.realm_access,
+    resource_access: tokenPayload?.resource_access
+  });
   // single-source-of-truth role check
   this.hasSystemAdminRole = this.authService.isSystemAdmin();
+  console.log('hasSystemAdminRole assigned value:', this.hasSystemAdminRole);
       // Only use roles in the SPA; API will enforce finer-grained permissions.
       // Allow the End War button to be clickable for authenticated users; the
       // API will return 403 if they're not allowed, and we'll show a friendly
