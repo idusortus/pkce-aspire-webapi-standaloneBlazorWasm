@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { AuthService } from './auth/auth.service';
+import { UserProfile } from './models/auth.models';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterOutlet],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
@@ -13,7 +14,7 @@ import { AuthService } from './auth/auth.service';
 export class AppComponent implements OnInit {
   title = 'Keycloak Angular Client';
   isLoggedIn = false;
-  userProfile: any = {};
+  userProfile: UserProfile | null = null;
 
   constructor(private authService: AuthService) {}
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
+import { UserProfile } from '../../models/api.models';
 
 @Component({
   standalone: true,
@@ -13,7 +14,8 @@ import { AuthService } from '../../auth/auth.service';
 export class HomeComponent implements OnInit {
   isLoggedIn = false;
   userRoles: string[] = [];
-  userClaims: any = null;
+  userClaims: UserProfile | null = null;
+  
   constructor(private authService: AuthService) {}
 
   ngOnInit() {

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { from, Observable } from 'rxjs';
+import { KeycloakTokenParsed, UserProfile } from '../models/auth.models';
 
 @Injectable({
   providedIn: 'root'
@@ -111,8 +112,8 @@ export class AuthService {
     // Direct check as a backup - look at the exact JWT structure you showed
     try {
       const token = this.getUserClaims();
-      if (token?.roles && Array.isArray(token.roles)) {
-        return token.roles.some((r: string) => 
+      if (token?.['roles'] && Array.isArray(token['roles'])) {
+        return token['roles'].some((r: string) => 
           typeof r === 'string' && r.toLowerCase() === 'systemadmin');
       }
     } catch (e) {
@@ -125,12 +126,12 @@ export class AuthService {
   public isFreeUser(): boolean { return this.hasRole('FreeUser'); }
   public isGuest(): boolean { return this.hasRole('Guest'); }
 
-  public getUserInfo(): Observable<any> {
-    return from(this.keycloakService.loadUserProfile());
+  public getUserInfo(): Observable<UserProfile> {
+    return from(this.keycloakService.loadUserProfile() as Promise<UserProfile>);
   }
 
-  public getUserClaims(): any {
-    const token = this.keycloakService.getKeycloakInstance().tokenParsed;
+  public getUserClaims(): UserProfile {
+    const token = this.keycloakService.getKeycloakInstance().tokenParsed as KeycloakTokenParsed;
     return token;
   }
 }

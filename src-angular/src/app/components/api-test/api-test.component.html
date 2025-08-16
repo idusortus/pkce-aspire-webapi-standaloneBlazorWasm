@@ -64,7 +64,6 @@
           
           <div *ngIf="!hasSystemAdminRole" class="alert alert-warning mt-3">
             You don't have the 'SystemAdmin' role required to access this endpoint.
-            <pre class="mt-2">Detected roles: {{ userRoles | json }}</pre>
           </div>
           
           <div *ngIf="ptoResult" class="api-result mt-3">

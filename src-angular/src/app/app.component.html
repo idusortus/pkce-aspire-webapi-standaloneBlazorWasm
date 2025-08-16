@@ -16,7 +16,7 @@
       <div class="d-flex">
         <ng-container *ngIf="isLoggedIn; else loginButton">
           <span class="navbar-text me-3">
-            Welcome, {{ userProfile.preferred_username || userProfile.name || 'User' }}
+            Welcome, {{ userProfile?.preferred_username || userProfile?.name || 'User' }}
           </span>
           <button class="btn btn-outline-light" (click)="logout()">Logout</button>
         </ng-container>

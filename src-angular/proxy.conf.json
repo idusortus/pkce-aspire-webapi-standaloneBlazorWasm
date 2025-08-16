@@ -3,12 +3,36 @@
     "target": "https://localhost:7044",
     "secure": false,
     "changeOrigin": true,
-    "logLevel": "info"
+    "logLevel": "debug",
+    "withCredentials": true,
+    "headers": {
+      "Origin": "https://localhost:4200"
+    }
   },
   "/health": {
     "target": "https://localhost:7044",
     "secure": false,
     "changeOrigin": true,
-    "logLevel": "info"
+    "logLevel": "debug"
+  },
+  "/corporate": {
+    "target": "https://localhost:7044",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "withCredentials": true,
+    "headers": {
+      "Origin": "https://localhost:4200"
+    }
+  },
+  "/politics": {
+    "target": "https://localhost:7044",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "withCredentials": true,
+    "headers": {
+      "Origin": "https://localhost:4200"
+    }
   }
 }

@@ -3,6 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../auth/auth.service';
+import { TokenDebugService } from '../../services/token-debug.service';
+import { 
+  ApiResponse, 
+  HealthCheckResponse, 
+  EmploymentResponse, 
+  PtoExtensionResponse, 
+  EndWarResponse 
+} from '../../models/api.models';
 
 @Component({
   standalone: true,
@@ -18,10 +26,10 @@ export class ApiTestComponent implements OnInit {
   canEndWar = false;
   ptoDays = 5;
   
-  healthResult: any = null;
-  employmentResult: any = null;
-  ptoResult: any = null;
-  warResult: any = null;
+  healthResult: ApiResponse<HealthCheckResponse> | null = null;
+  employmentResult: ApiResponse<EmploymentResponse> | null = null;
+  ptoResult: ApiResponse<PtoExtensionResponse> | null = null;
+  warResult: ApiResponse<EndWarResponse> | null = null;
   
   healthError: string | null = null;
   employmentError: string | null = null;
@@ -30,34 +38,27 @@ export class ApiTestComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private authService: AuthService
+    private authService: AuthService,
+    private tokenDebugService: TokenDebugService
   ) {}
 
   async ngOnInit() {
     this.isLoggedIn = await this.authService.isLoggedIn();
-    console.log('isLoggedIn status:', this.isLoggedIn);
     if (this.isLoggedIn) {
-  // grab normalized roles for display/debugging
-  this.userRoles = this.authService.getRoles();
-  // Log detailed role information for debugging
-  console.log('Raw userRoles array:', this.userRoles);
-  console.log('Has SystemAdmin role?', this.authService.isSystemAdmin());
-  
-  // Get the raw token to check the exact structure
-  const tokenPayload = this.authService.getUserClaims();
-  console.log('JWT token payload (partial):', {
-    roles: tokenPayload?.roles,
-    realm_access: tokenPayload?.realm_access,
-    resource_access: tokenPayload?.resource_access
-  });
-  // single-source-of-truth role check
-  this.hasSystemAdminRole = this.authService.isSystemAdmin();
-  console.log('hasSystemAdminRole assigned value:', this.hasSystemAdminRole);
+      // grab normalized roles for display/debugging
+      this.userRoles = this.authService.getRoles();
+      // single-source-of-truth role check
+      this.hasSystemAdminRole = this.authService.isSystemAdmin();
       // Only use roles in the SPA; API will enforce finer-grained permissions.
       // Allow the End War button to be clickable for authenticated users; the
       // API will return 403 if they're not allowed, and we'll show a friendly
       // unauthorized message based on that response.
       this.canEndWar = this.isLoggedIn;
+      
+      // Debug token information to help diagnose authentication issues
+      await this.tokenDebugService.logTokenInfo();
+      console.log('User roles from authService:', this.userRoles);
+      console.log('Has SystemAdmin role:', this.hasSystemAdminRole);
     }
   }
 
@@ -79,11 +80,17 @@ export class ApiTestComponent implements OnInit {
     this.employmentResult = null;
     this.employmentError = null;
     
+    console.log('Requesting employment status...');
+    // Debug token once more before making the request
+    this.tokenDebugService.logTokenInfo();
+    
     this.apiService.getEmploymentStatus().subscribe({
       next: (result) => {
+        console.log('Employment status response:', result);
         this.employmentResult = result;
       },
       error: (error) => {
+        console.error('Employment status error:', error);
         this.employmentError = this.getErrorMessage(error);
       }
     });
@@ -93,11 +100,17 @@ export class ApiTestComponent implements OnInit {
     this.ptoResult = null;
     this.ptoError = null;
     
+    console.log(`Requesting PTO extension of ${this.ptoDays} days...`);
+    // Debug token once more before making the request
+    this.tokenDebugService.logTokenInfo();
+    
     this.apiService.extendPTO(this.ptoDays).subscribe({
       next: (result) => {
+        console.log('PTO extension response:', result);
         this.ptoResult = result;
       },
       error: (error) => {
+        console.error('PTO extension error:', error);
         this.ptoError = this.getErrorMessage(error);
       }
     });
@@ -107,13 +120,19 @@ export class ApiTestComponent implements OnInit {
     this.warResult = null;
     this.warError = null;
     
+    console.log('Requesting to end war...');
+    // Debug token once more before making the request
+    this.tokenDebugService.logTokenInfo();
+    
     this.apiService.endWar().subscribe({
       next: (result) => {
+        console.log('End war response:', result);
         this.warResult = result;
       },
       error: (error) => {
+        console.error('End war error:', error);
         if (error.status === 403) {
-          this.warError = 'Unauthorized: you do not have permission to perform this action.';
+          this.warError = 'Unauthorized: you do not have permission to perform this action. Your account lacks the required roles or claims.';
         } else {
           this.warError = this.getErrorMessage(error);
         }
@@ -122,14 +141,20 @@ export class ApiTestComponent implements OnInit {
   }
 
   private getErrorMessage(error: any): string {
+    console.log('Full error object:', error);
+    
     if (error.status === 401) {
-      return 'Unauthorized: You need to log in to access this endpoint.';
+      return 'Unauthorized: You need to log in to access this endpoint. Please check your authentication token.';
     } else if (error.status === 403) {
-      return 'Forbidden: You do not have permission to access this endpoint.';
+      return 'Forbidden: You do not have permission to access this endpoint. Your account lacks the required roles or permissions.';
+    } else if (error.status === 0) {
+      return 'Network error: Unable to connect to the API. This may be due to CORS restrictions or the API being unavailable.';
     } else if (error.error && error.error.message) {
       return `Error: ${error.error.message}`;
+    } else if (error.message) {
+      return `Error: ${error.message}`;
     } else {
-      return `Error: ${error.message || 'Unknown error'}`;
+      return `Unknown error (Status: ${error.status || 'N/A'})`;
     }
   }
 }
