@@ -1,0 +1,14 @@
+{
+  "/hr": {
+    "target": "https://localhost:7044",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "info"
+  },
+  "/health": {
+    "target": "https://localhost:7044",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "info"
+  }
+}

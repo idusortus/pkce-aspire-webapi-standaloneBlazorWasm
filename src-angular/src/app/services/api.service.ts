@@ -25,7 +25,7 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/hr/employed`);
   }
 
-  // Endpoint that requires the CEO role
+  // Endpoint that requires the SystemAdmin role
   extendPTO(bonusDays: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/corporate/pto/extend/${bonusDays}`);
   }

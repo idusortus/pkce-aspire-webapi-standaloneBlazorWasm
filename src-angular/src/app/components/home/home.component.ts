@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
@@ -13,7 +14,6 @@ export class HomeComponent implements OnInit {
   isLoggedIn = false;
   userRoles: string[] = [];
   userClaims: any = null;
-
   constructor(private authService: AuthService) {}
 
   ngOnInit() {

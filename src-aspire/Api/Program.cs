@@ -15,25 +15,19 @@ builder.Services.AddAuthentication().AddKeycloakJwtBearer("keycloak", realm: "wi
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("SystemAdminOnly", policy => policy.RequireRole("systemadmin"));
-    options.AddPolicy("TheirMonkeysTheirCircus", policy => policy.RequireRole("systemadmin"));
+    options.AddPolicy("SystemAdminOnly", policy => policy.RequireRole("SystemAdmin"));
+    options.AddPolicy("TheirMonkeysTheirCircus", policy => policy.RequireRole("SystemAdmin"));
     options.AddPolicy("AbleToEndWar", policy => policy.RequireClaim("CanCreateWhirledPeas", "true"));
 }); // Endpoint policies
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("BlazorSpaPolicy", policy =>
+    // Single CORS policy for SPAs (explicit origins only). Keep this strict
+    // and list each allowed origin explicitly since these are external apps.
+    options.AddPolicy("AllowSpaOrigins", policy =>
     {
         policy
-            .WithOrigins("https://localhost:7059")
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-    });
-    
-    options.AddPolicy("AngularSpaPolicy", policy =>
-    {
-        policy
-            .WithOrigins("http://localhost:4200")
+            .WithOrigins("https://localhost:7059", "https://localhost:4200")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -48,8 +42,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("BlazorSpaPolicy");
-app.UseCors("AngularSpaPolicy");
+// Apply CORS before authentication/authorization and endpoint mapping so the
+// browser receives the appropriate Access-Control-Allow-* headers for SPA requests.
+app.UseCors("AllowSpaOrigins");
 app.MapEndpoints(); // Map implementors of IEndpoint
 app.MapScalarApiReference(); // Enable Scalar UI @ ../scalar/v1
 

@@ -25,12 +25,13 @@ This Angular application integrates with Keycloak for authentication and communi
    - Enable PKCE with `S256` (set in Advanced Settings)
 
 2. Create the required roles for testing:
-   - `systemadmin` role
+   - `SystemAdmin` role
    
 3. Create a user for testing and assign the roles:
-   - User with `systemadmin` role
-   - User with `CanCreateWhirledPeas: true` claim (add this as an attribute)
-   - Regular user with no special roles or claims
+   - User with `SystemAdmin` role
+   - Regular user with no special roles
+
+Note: finer-grained permission claims (for example `CanCreateWhirledPeas`) are evaluated by the Web API and do not affect which UI elements are shown in the SPA. The SPA only uses role claims to gate availability of high-level actions.
 
 ## Installation
 
@@ -57,8 +58,8 @@ The application includes a page for testing different API endpoints with various
 
 1. **Health Endpoint**: No authentication required
 2. **Employment Status**: Any authenticated user can access
-3. **Extend PTO**: Requires the `systemadmin` role
-4. **End War**: Requires the `CanCreateWhirledPeas: true` claim
+3. **Extend PTO**: Requires the `SystemAdmin` role
+4. **End War**: This action is protected by a server-side claim; the SPA will show a friendly unauthorized message if the API rejects the request.
 
 ## Building for Production
 

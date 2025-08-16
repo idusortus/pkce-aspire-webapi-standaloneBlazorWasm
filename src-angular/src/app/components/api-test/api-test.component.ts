@@ -14,7 +14,7 @@ import { AuthService } from '../../auth/auth.service';
 export class ApiTestComponent implements OnInit {
   isLoggedIn = false;
   userRoles: string[] = [];
-  hasCEORole = false;
+  hasSystemAdminRole = false;
   canEndWar = false;
   ptoDays = 5;
   
@@ -36,12 +36,15 @@ export class ApiTestComponent implements OnInit {
   async ngOnInit() {
     this.isLoggedIn = await this.authService.isLoggedIn();
     if (this.isLoggedIn) {
-      this.userRoles = this.authService.getRoles();
-      this.hasCEORole = this.authService.hasRealmRole('systemadmin');
-      
-      // Check if user has the claim to create whirled peas
-      const claims = this.authService.getUserClaims();
-      this.canEndWar = claims && claims.CanCreateWhirledPeas === 'true';
+  // grab normalized roles for display/debugging
+  this.userRoles = this.authService.getRoles();
+  // single-source-of-truth role check
+  this.hasSystemAdminRole = this.authService.isSystemAdmin();
+      // Only use roles in the SPA; API will enforce finer-grained permissions.
+      // Allow the End War button to be clickable for authenticated users; the
+      // API will return 403 if they're not allowed, and we'll show a friendly
+      // unauthorized message based on that response.
+      this.canEndWar = this.isLoggedIn;
     }
   }
 
@@ -96,7 +99,11 @@ export class ApiTestComponent implements OnInit {
         this.warResult = result;
       },
       error: (error) => {
-        this.warError = this.getErrorMessage(error);
+        if (error.status === 403) {
+          this.warError = 'Unauthorized: you do not have permission to perform this action.';
+        } else {
+          this.warError = this.getErrorMessage(error);
+        }
       }
     });
   }

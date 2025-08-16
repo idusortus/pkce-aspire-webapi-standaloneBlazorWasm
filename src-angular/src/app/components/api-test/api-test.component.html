@@ -49,21 +49,21 @@
     
     <!-- PTO Extension - Requires System Admin Role -->
     <div class="col-md-6 mb-4">
-      <div class="card" [ngClass]="{'text-muted': !hasCEORole}">
+      <div class="card" [ngClass]="{'text-muted': !hasSystemAdminRole}">
         <div class="card-header">
           <h3>Extend PTO</h3>
-          <small class="text-muted">Requires 'systemadmin' role</small>
+          <small class="text-muted">Requires 'SystemAdmin' role</small>
         </div>
         <div class="card-body">
-          <p>Extends PTO for all employees. Requires systemadmin (CEO) role.</p>
+          <p>Extends PTO for all employees. Requires the 'SystemAdmin' role.</p>
           <div class="mb-3">
             <label for="ptoDays" class="form-label">Bonus Days:</label>
             <input type="number" class="form-control" id="ptoDays" [(ngModel)]="ptoDays" min="1" max="30">
           </div>
-          <button class="btn btn-primary" [disabled]="!hasCEORole" (click)="extendPTO()">Extend PTO</button>
+          <button class="btn btn-primary" [disabled]="!hasSystemAdminRole" (click)="extendPTO()">Extend PTO</button>
           
-          <div *ngIf="!hasCEORole" class="alert alert-warning mt-3">
-            You don't have the systemadmin role required to access this endpoint.
+          <div *ngIf="!hasSystemAdminRole" class="alert alert-warning mt-3">
+            You don't have the 'SystemAdmin' role required to access this endpoint.
           </div>
           
           <div *ngIf="ptoResult" class="api-result mt-3">
@@ -79,17 +79,17 @@
     
     <!-- End War - Requires Special Claim -->
     <div class="col-md-6 mb-4">
-      <div class="card" [ngClass]="{'text-muted': !canEndWar}">
+      <div class="card" [ngClass]="{'text-muted': !isLoggedIn}">
         <div class="card-header">
           <h3>End War</h3>
-          <small class="text-muted">Requires 'CanCreateWhirledPeas' claim</small>
+          <small class="text-muted">Requires server-side permission</small>
         </div>
         <div class="card-body">
-          <p>Ends all wars globally. Requires special claim.</p>
-          <button class="btn btn-primary" [disabled]="!canEndWar" (click)="endWar()">End War</button>
+          <p>Ends all wars globally. Server decides if you may perform this action.</p>
+          <button class="btn btn-primary" [disabled]="!isLoggedIn" (click)="endWar()">End War</button>
           
-          <div *ngIf="!canEndWar" class="alert alert-warning mt-3">
-            You don't have the 'CanCreateWhirledPeas' claim required to access this endpoint.
+          <div *ngIf="!isLoggedIn" class="alert alert-warning mt-3">
+            You must be authenticated to call this endpoint.
           </div>
           
           <div *ngIf="warResult" class="api-result mt-3">
