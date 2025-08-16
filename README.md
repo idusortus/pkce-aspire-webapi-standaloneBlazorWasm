@@ -22,6 +22,7 @@ TODO:
 - [x] Scalar UI + Imbedded Scalar Auth to IdP
 - [x] Postman PKCE Config Documentation 
 - [x] Example Claim-Based Policies
+- [x] Angular SPA
 - [ ] Process Documentation (WiP)
 - [ ] Example Role-Based Policies
 - [ ] Surface Manual Test APIs @ Blazor
