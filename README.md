@@ -24,8 +24,8 @@ TODO:
 - [x] Example Claim-Based Policies
 - [x] Angular SPA
 - [ ] Process Documentation (WiP)
-- [ ] Example Role-Based Policies
-- [ ] Surface Manual Test APIs @ Blazor
+- [x] Example Role-Based Policies
+- [x] Surface Manual Test APIs @ Blazor
 - [ ] xUnit
 - [ ] Tidy Docs
 - [ ] Tidy Code
